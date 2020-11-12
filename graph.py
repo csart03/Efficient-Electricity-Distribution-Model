@@ -54,6 +54,47 @@ def connectsubstationstosource(citysubstations,citysource,pred,x1,x2):
 		addEdge(graph, x1+i, x2, dis1)
 	return graph
 
+# def knapsack01(W,city):
+	
+# 	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
+#     for i in range(n + 1): 
+#         for w in range(W + 1): 
+#             if i == 0 or w == 0: 
+#                 K[i][w] = 0
+#             elif wt[i-1] <= w: 
+#                 K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]) 
+#             else: 
+#                 K[i][w] = K[i-1][w] 
+  
+#     return K[n][W]
+
+def myFunc(e):
+	return e[1]
+
+def greedyalgo(cityhouses):
+	amt=int(input('Enter the amount of electricity u need to distribute:-'))
+	chs=[]
+	for i in range(len(cityhouses)):
+		chs.append((i+1,cityhouses[i][2]))
+	sorted(chs,key=myFunc)
+	ans1=0
+	idx=-1
+	for i in range(len(chs)):
+		if amt < 0:
+			idx=i-1
+			break
+		ans1+=1
+		amt-=chs[i][1]
+	print('Total house that will receive electricity:-{}'.format(str(ans1)))
+	houses_to_show=[]
+	for i in range(0,idx+1):
+		houses_to_show.append(cityhouses[chs[i][0]])
+	houses_to_show=np.array(houses_to_show)
+	plt.scatter(houses_to_show[:,0],houses_to_show[:,1])
+	plt.show()
+	print(graph1)
+	# for i in range(len(graph1)):
+
 def knapsack01(W,city):
 	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
     for i in range(n + 1): 
@@ -72,7 +113,8 @@ no_of_houses=int(input("Enter the number of houses:-"))
 print("Enter the coordinates of the houses one by one:-")
 for i in range(no_of_houses):
 	lh=input().split(',')
-	cityhouses.append([float(lh[0]),float(lh[1])])
+	cityhouses.append([float(lh[0]),float(lh[1]),float(lh[2])])
+	# cityhouses.append([float(lh[0]),float(lh[1])])
 
 # print(cityhouses)
 cityhouses=np.array(cityhouses)
@@ -99,4 +141,5 @@ citysource=kmeans.labels_
 graph1=connecthousestotransformers(cityhouses, citytransformers, pred1,0,len(cityhouses))
 graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
 graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
-print(graph1)
+greedyalgo(cityhouses)
+# print(graph1)
