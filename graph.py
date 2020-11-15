@@ -5,6 +5,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 # from sklearn.datasets import make_blobs
 from sklearn.cluster import KMeans
+import pandas as pd
 class citytoken:
 	def __init__(self,x,y,label):
 		self.x=x
@@ -95,18 +96,38 @@ def greedyalgo(cityhouses):
 	print(graph1)
 	# for i in range(len(graph1)):
 
-def knapsack01(W,city):
-	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
-    for i in range(n + 1): 
-        for w in range(W + 1): 
-            if i == 0 or w == 0: 
-                K[i][w] = 0
-            elif wt[i-1] <= w: 
-                K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]) 
-            else: 
-                K[i][w] = K[i-1][w] 
+def dynamicpricing():
+	# Cc=0.0,Cd=0.0,Cg=0.0
+	Cc=float(input('Enter price of coal per unit'))
+	Cd=float(input('Enter price of diesel per unit'))
+	Cg=float(input('Enter price of gas per unit'))	
+	Pc=float(input('Enter percentage of coal usedused'))
+	Pd=float(input('Enter percentage of diesel used'))
+	Pg=float(input('Enter percentage of gas used'))
+	price_one_unit_electricity=Cc*Pc+Cd*Pd+Cg*Pg
+	df=pd.read_csv('sample.csv')
+	df=np.array(df)
+	x=df.shape[0]-168
+	for i in range(0,x):
+		consumption=df[0:168,7]
+		avgcon=np.sum(consumption)
+		avgcon/=168
+		D=float(input('Input Demand of Last hour-'))
+		D/=avgcon
+		D*=price_one_unit_electricity
+		print('Price of current hour :- {}'.format(D))
+# def knapsack01(W,city):
+# 	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
+#     for i in range(n + 1): 
+#         for w in range(W + 1): 
+#             if i == 0 or w == 0: 
+#                 K[i][w] = 0
+#             elif wt[i-1] <= w: 
+#                 K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]) 
+#             else: 
+#                 K[i][w] = K[i-1][w] 
   
-    return K[n][W]
+#     return K[n][W]
 
 cityhouses=[]
 no_of_houses=int(input("Enter the number of houses:-"))
@@ -143,3 +164,4 @@ graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2
 graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
 greedyalgo(cityhouses)
 # print(graph1)
+dynamicpricing()
