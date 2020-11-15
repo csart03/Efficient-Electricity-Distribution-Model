@@ -104,64 +104,55 @@ def dynamicpricing():
 	Pc=float(input('Enter percentage of coal usedused'))
 	Pd=float(input('Enter percentage of diesel used'))
 	Pg=float(input('Enter percentage of gas used'))
-	price_one_unit_electricity=Cc*Pc+Cd*Pd+Cg*Pg
+	price_one_unit_electricity=19.4
+	# Cc*Pc+Cd*Pd+Cg*Pg
 	df=pd.read_csv('sample.csv')
 	df=np.array(df)
-	x=df.shape[0]-168
+	x=df.shape[0]-170
 	for i in range(0,x):
-		consumption=df[0:168,7]
+		consumption=df[i:168+i,7]
+		consumption = consumption.astype(np.float)
 		avgcon=np.sum(consumption)
-		avgcon/=168
-		D=float(input('Input Demand of Last hour-'))
+		# avgcon=float(avgcon)
+		avgcon/=float(168)
+		D=float(df[169+i][7])
 		D/=avgcon
 		D*=price_one_unit_electricity
-		print('Price of current hour :- {}'.format(D))
-# def knapsack01(W,city):
-# 	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
-#     for i in range(n + 1): 
-#         for w in range(W + 1): 
-#             if i == 0 or w == 0: 
-#                 K[i][w] = 0
-#             elif wt[i-1] <= w: 
-#                 K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]) 
-#             else: 
-#                 K[i][w] = K[i-1][w] 
-  
-#     return K[n][W]
+		print('Price of current hour :- {} on day and hour {}'.format(D,df[i+169][0]))
 
-cityhouses=[]
-no_of_houses=int(input("Enter the number of houses:-"))
-print("Enter the coordinates of the houses one by one:-")
-for i in range(no_of_houses):
-	lh=input().split(',')
-	cityhouses.append([float(lh[0]),float(lh[1]),float(lh[2])])
+# cityhouses=[]
+# no_of_houses=int(input("Enter the number of houses:-"))
+# print("Enter the coordinates of the houses one by one:-")
+# for i in range(no_of_houses):
+# 	lh=input().split(',')
+# 	cityhouses.append([float(lh[0]),float(lh[1]),float(lh[2])])
 	# cityhouses.append([float(lh[0]),float(lh[1])])
 
 # print(cityhouses)
-cityhouses=np.array(cityhouses)
-no_of_transformers=int(input("Enter the number of transformers you wish to install:-"))
-kmeans=KMeans(n_clusters=no_of_transformers)
-kmeans.fit(cityhouses)
-citytransformers=kmeans.cluster_centers_
-pred1=kmeans.labels_
-# print(pred1)
-# print(citytranformers)
-no_of_substations=int(input("Enter the number of substations you wish to install:-"))
-kmeans=KMeans(n_clusters=no_of_substations)
-kmeans.fit(citytransformers)
-citysubstations=kmeans.cluster_centers_
-pred2=kmeans.labels_
-kmeans=KMeans(n_clusters=1)
-kmeans.fit(citysubstations)
-citysource=kmeans.labels_
-# plt.scatter(cityhouses[:,0],cityhouses[:,1])
-# plt.scatter(citytranformers[:,0],citytranformers[:,1],marker='*',color='orange')
-# plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red')
-# plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue')
-# plt.show()
-graph1=connecthousestotransformers(cityhouses, citytransformers, pred1,0,len(cityhouses))
-graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
-graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
-greedyalgo(cityhouses)
+# cityhouses=np.array(cityhouses)
+# no_of_transformers=int(input("Enter the number of transformers you wish to install:-"))
+# kmeans=KMeans(n_clusters=no_of_transformers)
+# kmeans.fit(cityhouses)
+# citytransformers=kmeans.cluster_centers_
+# pred1=kmeans.labels_
+# # print(pred1)
+# # print(citytranformers)
+# no_of_substations=int(input("Enter the number of substations you wish to install:-"))
+# kmeans=KMeans(n_clusters=no_of_substations)
+# kmeans.fit(citytransformers)
+# citysubstations=kmeans.cluster_centers_
+# pred2=kmeans.labels_
+# kmeans=KMeans(n_clusters=1)
+# kmeans.fit(citysubstations)
+# citysource=kmeans.labels_
+# # plt.scatter(cityhouses[:,0],cityhouses[:,1])
+# # plt.scatter(citytranformers[:,0],citytranformers[:,1],marker='*',color='orange')
+# # plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red')
+# # plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue')
+# # plt.show()
+# graph1=connecthousestotransformers(cityhouses, citytransformers, pred1,0,len(cityhouses))
+# graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
+# graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
+# greedyalgo(cityhouses)
 # print(graph1)
 dynamicpricing()
