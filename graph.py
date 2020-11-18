@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 # from sklearn.datasets import make_blobs
 from sklearn.cluster import KMeans
 import pandas as pd
+import pricing
 class citytoken:
 	def __init__(self,x,y,label):
 		self.x=x
@@ -120,39 +121,39 @@ def dynamicpricing():
 		D*=price_one_unit_electricity
 		print('Price of current hour :- {} on day and hour {}'.format(D,df[i+169][0]))
 
-# cityhouses=[]
-# no_of_houses=int(input("Enter the number of houses:-"))
-# print("Enter the coordinates of the houses one by one:-")
-# for i in range(no_of_houses):
-# 	lh=input().split(',')
-# 	cityhouses.append([float(lh[0]),float(lh[1]),float(lh[2])])
+cityhouses=[]
+no_of_houses=int(input("Enter the number of houses:-"))
+print("Enter the coordinates of the houses one by one:-")
+for i in range(no_of_houses):
+	lh=input().split(',')
+	cityhouses.append([float(lh[0]),float(lh[1]),float(lh[2]),float(lh[3]),float(lh[4])])
 	# cityhouses.append([float(lh[0]),float(lh[1])])
 
 # print(cityhouses)
-# cityhouses=np.array(cityhouses)
-# no_of_transformers=int(input("Enter the number of transformers you wish to install:-"))
-# kmeans=KMeans(n_clusters=no_of_transformers)
-# kmeans.fit(cityhouses)
-# citytransformers=kmeans.cluster_centers_
-# pred1=kmeans.labels_
-# # print(pred1)
-# # print(citytranformers)
-# no_of_substations=int(input("Enter the number of substations you wish to install:-"))
-# kmeans=KMeans(n_clusters=no_of_substations)
-# kmeans.fit(citytransformers)
-# citysubstations=kmeans.cluster_centers_
-# pred2=kmeans.labels_
-# kmeans=KMeans(n_clusters=1)
-# kmeans.fit(citysubstations)
-# citysource=kmeans.labels_
-# # plt.scatter(cityhouses[:,0],cityhouses[:,1])
-# # plt.scatter(citytranformers[:,0],citytranformers[:,1],marker='*',color='orange')
-# # plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red')
-# # plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue')
-# # plt.show()
-# graph1=connecthousestotransformers(cityhouses, citytransformers, pred1,0,len(cityhouses))
-# graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
-# graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
-# greedyalgo(cityhouses)
-# print(graph1)
+cityhouses=np.array(cityhouses)
+no_of_transformers=int(input("Enter the number of transformers you wish to install:-"))
+kmeans=KMeans(n_clusters=no_of_transformers)
+kmeans.fit(cityhouses)
+citytransformers=kmeans.cluster_centers_
+pred1=kmeans.labels_
+# print(pred1)
+# print(citytranformers)
+no_of_substations=int(input("Enter the number of substations you wish to install:-"))
+kmeans=KMeans(n_clusters=no_of_substations)
+kmeans.fit(citytransformers)
+citysubstations=kmeans.cluster_centers_
+pred2=kmeans.labels_
+kmeans=KMeans(n_clusters=1)
+kmeans.fit(citysubstations)
+citysource=kmeans.labels_
+# plt.scatter(cityhouses[:,0],cityhouses[:,1])
+# plt.scatter(citytranformers[:,0],citytranformers[:,1],marker='*',color='orange')
+# plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red')
+# plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue')
+# plt.show()
+graph1=connecthousestotransformers(cityhouses, citytransformers, pred1,0,len(cityhouses))
+graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
+graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
+greedyalgo(cityhouses)
+print(graph1)
 dynamicpricing()
