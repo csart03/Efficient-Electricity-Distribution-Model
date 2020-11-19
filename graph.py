@@ -56,19 +56,46 @@ def connectsubstationstosource(citysubstations,citysource,pred,x1,x2):
 		addEdge(graph, x1+i, x2, dis1)
 	return graph
 
-# def knapsack01(W,city):
-	
-# 	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
-#     for i in range(n + 1): 
-#         for w in range(W + 1): 
-#             if i == 0 or w == 0: 
-#                 K[i][w] = 0
-#             elif wt[i-1] <= w: 
-#                 K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]) 
-#             else: 
-#                 K[i][w] = K[i-1][w] 
-  
-#     return K[n][W]
+def knapsackhouse(cityhouses,W):
+	n=len(cityhouses)
+	values=[]
+	weights=[]
+	for i in range(len(cityhouses)):
+		weights.append(int(cityhouses[i][2]))
+		if cityhouses[i][3]==2:
+			values.append(cityhouses[i][3]*4.0)
+		if cityhouses[i][3]==5:
+			values.append(cityhouses[i][3]*4.5)
+		if cityhouses[i][3]==10:
+			values.append(cityhouses[i][3]*6.0)
+
+	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
+
+	for i in range(n):
+		for w in range(W + 1): 
+			if i == 0 or w == 0: 
+				K[i][w] = 0
+			elif weights[i] <= w: 
+				K[i][w] = max(values[i] + K[i][w-weights[i]],  K[i][w]) 
+			else: 
+				K[i][w] = K[i][w] 
+	res= K[n][W]
+	w=W
+	house_to_show=[]
+	for i in range(n, 0, -1): 
+		if res <= 0: 
+			break
+		if res == K[i - 1][w]: 
+			continue
+		else: 
+			print(wt[i - 1]) 
+			house_to_show.append(cityhouses[i-1])
+			res = res - values[i - 1] 
+			w = w - weights[i - 1]
+
+	houses_to_show=np.array(houses_to_show)
+	plt.scatter(houses_to_show[:,0],houses_to_show[:,1])
+	plt.show()
 
 def myFunc(e):
 	return e[1]
@@ -82,7 +109,7 @@ def greedyalgo(cityhouses):
 	ans1=0
 	idx=-1
 	for i in range(len(chs)):
-		if amt < 0:
+		if amt <= 0:
 			idx=i-1
 			break
 		ans1+=1
@@ -126,14 +153,14 @@ no_of_houses=int(input("Enter the number of houses:-"))
 print("Enter the coordinates of the houses one by one:-")
 for i in range(no_of_houses):
 	lh=input().split(',')
-	cityhouses.append([float(lh[0]),float(lh[1]),float(lh[2]),float(lh[3]),float(lh[4])])
+	cityhouses.append([float(lh[0]),float(lh[1]),int(lh[2]),int(lh[3])])
 	# cityhouses.append([float(lh[0]),float(lh[1])])
-
 # print(cityhouses)
 cityhouses=np.array(cityhouses)
+cityhouses1=cityhouses[:,0:2]
 no_of_transformers=int(input("Enter the number of transformers you wish to install:-"))
 kmeans=KMeans(n_clusters=no_of_transformers)
-kmeans.fit(cityhouses)
+kmeans.fit(cityhouses1)
 citytransformers=kmeans.cluster_centers_
 pred1=kmeans.labels_
 # print(pred1)
@@ -146,14 +173,15 @@ pred2=kmeans.labels_
 kmeans=KMeans(n_clusters=1)
 kmeans.fit(citysubstations)
 citysource=kmeans.labels_
-# plt.scatter(cityhouses[:,0],cityhouses[:,1])
+plt.scatter(cityhouses[:,0],cityhouses[:,1])
 # plt.scatter(citytranformers[:,0],citytranformers[:,1],marker='*',color='orange')
 # plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red')
 # plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue')
-# plt.show()
-graph1=connecthousestotransformers(cityhouses, citytransformers, pred1,0,len(cityhouses))
+plt.show()
+graph1=connecthousestotransformers(cityhouses1, citytransformers, pred1,0,len(cityhouses1))
 graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
 graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
-greedyalgo(cityhouses)
-print(graph1)
-dynamicpricing()
+# greedyalgo(cityhouses)
+knapsackhouse(cityhouses, 500)
+# print(graph1)
+# dynamicpricing()
