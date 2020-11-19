@@ -58,10 +58,12 @@ def connectsubstationstosource(citysubstations,citysource,pred,x1,x2):
 
 def knapsackhouse(cityhouses,W):
 	n=len(cityhouses)
+	# print(n)
 	values=[]
 	weights=[]
 	for i in range(len(cityhouses)):
 		weights.append(int(cityhouses[i][2]))
+		# print(cityhouses[i][3])
 		if cityhouses[i][3]==2:
 			values.append(cityhouses[i][3]*4.0)
 		if cityhouses[i][3]==5:
@@ -69,27 +71,29 @@ def knapsackhouse(cityhouses,W):
 		if cityhouses[i][3]==10:
 			values.append(cityhouses[i][3]*6.0)
 
+	# print(len(weights))
+	# print(len(values))
 	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
 
-	for i in range(n):
+	for i in range(n+1):
 		for w in range(W + 1): 
 			if i == 0 or w == 0: 
 				K[i][w] = 0
-			elif weights[i] <= w: 
-				K[i][w] = max(values[i] + K[i][w-weights[i]],  K[i][w]) 
+			elif weights[i-1] <= w: 
+				K[i][w] = max(values[i-1] + K[i-1][w-weights[i-1]],  K[i-1][w]) 
 			else: 
-				K[i][w] = K[i][w] 
+				K[i][w] = K[i-1][w] 
 	res= K[n][W]
 	w=W
-	house_to_show=[]
+	houses_to_show=[]
 	for i in range(n, 0, -1): 
 		if res <= 0: 
 			break
 		if res == K[i - 1][w]: 
 			continue
 		else: 
-			print(wt[i - 1]) 
-			house_to_show.append(cityhouses[i-1])
+			# print(wt[i - 1]) 
+			houses_to_show.append(cityhouses[i-1])
 			res = res - values[i - 1] 
 			w = w - weights[i - 1]
 
