@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 import pandas as pd
 from prettytable import PrettyTable
-import pricing
+from pricing import *
 import random
 class citytoken:
 	def __init__(self,x,y,label):
@@ -188,7 +188,7 @@ def greedyalgo(ch,W):
 	# plt.scatter(ch[:,0],ch[:,1],color='red')
 	# plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue')
 	# plt.show()
-	# print(profit)
+	print(profit)
 	return (profit,len(houses_to_show))
 	# for i in range(len(graph1)):
 
@@ -279,19 +279,20 @@ citysubstations=kmeans.cluster_centers_
 pred2=kmeans.labels_
 kmeans=KMeans(n_clusters=1)
 kmeans.fit(citysubstations)
-citysource=kmeans.labels_
+citysource=kmeans.cluster_centers_
 plt.scatter(cityhouses[:,0],cityhouses[:,1])
 # plt.scatter(citytranformers[:,0],citytranformers[:,1],marker='*',color='orange')
 # plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red')
-# plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue')
+plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue')
 plt.show()
 graph1=connecthousestotransformers(cityhouses1, citytransformers, pred1,0,len(cityhouses1))
 graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
 graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
-# greedyalgo(cityhouses,500)
+greedyalgo(cityhouses,500)
 # knapsackhouse(cityhouses, 500)
 # knapsackcluster(cityhouses, pred1, 500, no_of_transformers)
 # print(graph1)
 # dynamicpricing()
 # simulation(cityhouses, 500, pred1, no_of_transformers)
-dynamicpricing()
+# dynamicpricing()
+dynamicpricingbill()
