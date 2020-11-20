@@ -123,8 +123,8 @@ def knapsackcluster(cityhouses,pred,W,no_of_transformers):
 			values[pred[i]]+=float(cityhouses[i][2]*4.5)
 		if cityhouses[i][3]==10:
 			values[pred[i]]+=float(cityhouses[i][2]*6.0)
-	# print(weights)
-	# print(values)
+	print(weights)
+	print(values)
 	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
 
 	for i in range(n+1):
@@ -145,7 +145,7 @@ def knapsackcluster(cityhouses,pred,W,no_of_transformers):
 			continue
 		else: 
 			# print(wt[i - 1]) 
-			clusters_to_show.append(i)
+			clusters_to_show.append(i-1)
 			res = res - values[i - 1] 
 			w = w - weights[i - 1]
 	print(clusters_to_show)
@@ -295,19 +295,19 @@ pred2=kmeans.labels_
 kmeans=KMeans(n_clusters=1)
 kmeans.fit(citysubstations)
 citysource=kmeans.cluster_centers_
-plt.scatter(cityhouses[:,0],cityhouses[:,1])
-plt.scatter(citytransformers[:,0],citytransformers[:,1],marker='*',color='orange',label='transformers')
-plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red',label='substations')
-plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue',label='source')
-plt.title("Kmeans 3")
-plt.legend()  # Add a legend.
-plt.show()
+# plt.scatter(cityhouses[:,0],cityhouses[:,1])
+# plt.scatter(citytransformers[:,0],citytransformers[:,1],marker='*',color='orange',label='transformers')
+# plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red',label='substations')
+# plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue',label='source')
+# plt.title("Kmeans 3")
+# plt.legend()  # Add a legend.
+# plt.show()
 
 graph1=connecthousestotransformers(cityhouses1, citytransformers, pred1,0,len(cityhouses1))
 graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
 graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
-greedyalgo(cityhouses,500)
-knapsackhouse(cityhouses, 500)
+# greedyalgo(cityhouses,500)
+# knapsackhouse(cityhouses, 500)
 knapsackcluster(cityhouses, pred1, 500, no_of_transformers)
 # print(graph1)
 # dynamicpricing()
