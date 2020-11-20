@@ -67,11 +67,11 @@ def knapsackhouse(cityhouses,W):
 		weights.append(int(cityhouses[i][2]))
 		# print(cityhouses[i][3])
 		if cityhouses[i][3]==2:
-			values.append(cityhouses[i][3]*4.0)
+			values.append(cityhouses[i][2]*4.0)
 		if cityhouses[i][3]==5:
-			values.append(cityhouses[i][3]*4.5)
+			values.append(cityhouses[i][2]*4.5)
 		if cityhouses[i][3]==10:
-			values.append(cityhouses[i][3]*6.0)
+			values.append(cityhouses[i][2]*6.0)
 
 	# print(len(weights))
 	# print(len(values))
@@ -99,10 +99,16 @@ def knapsackhouse(cityhouses,W):
 			res = res - values[i - 1] 
 			w = w - weights[i - 1]
 
+	print('knapsackhouse')
+	print('Total house that will receive electricity:-{}'.format(str(len(houses_to_show))))
+	print('Total profit:-{}'.format(str(K[n][W])))
+
 	houses_to_show=np.array(houses_to_show)
-	# plt.scatter(cityhouses[:,0],cityhouses[:,1],color='red')
-	# plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue')
-	# plt.show()
+	plt.scatter(cityhouses[:,0],cityhouses[:,1],color='red',label='supply cut')
+	plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
+	plt.title("Knapsack Algorithm on houses")
+	plt.legend()
+	plt.show()
 	return (K[n][W],len(houses_to_show))
 
 def knapsackcluster(cityhouses,pred,W,no_of_transformers):
@@ -112,11 +118,11 @@ def knapsackcluster(cityhouses,pred,W,no_of_transformers):
 	for i in range(len(cityhouses)):
 		weights[pred[i]]+=int(cityhouses[i][2])
 		if cityhouses[i][3]==2:
-			values[pred[i]]+=float(cityhouses[i][3]*4.0)
+			values[pred[i]]+=float(cityhouses[i][2]*4.0)
 		if cityhouses[i][3]==5:
-			values[pred[i]]+=float(cityhouses[i][3]*4.5)
+			values[pred[i]]+=float(cityhouses[i][2]*4.5)
 		if cityhouses[i][3]==10:
-			values[pred[i]]+=float(cityhouses[i][3]*6.0)
+			values[pred[i]]+=float(cityhouses[i][2]*6.0)
 	# print(weights)
 	# print(values)
 	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
@@ -142,16 +148,22 @@ def knapsackcluster(cityhouses,pred,W,no_of_transformers):
 			clusters_to_show.append(i)
 			res = res - values[i - 1] 
 			w = w - weights[i - 1]
-	# print(clusters_to_show)
+	print(clusters_to_show)
 	houses_to_show=[]
 	for i in range(len(cityhouses)):
 		if pred[i] in clusters_to_show:
 			houses_to_show.append(cityhouses[i])
 
 	houses_to_show=np.array(houses_to_show)
-	# plt.scatter(cityhouses[:,0],cityhouses[:,1],color='red')
-	# plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue')
-	# plt.show()
+
+	print('knapsackcluster')
+	print('Total house that will receive electricity:-{}'.format(str(len(houses_to_show))))
+	print('Total profit:-{}'.format(str(K[n][W])))
+	plt.scatter(cityhouses[:,0],cityhouses[:,1],color='red',label='supply cut')
+	plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
+	plt.title("Knapsack Algorithm on clusters")
+	plt.legend()
+	plt.show()
 	return (K[n][W],len(clusters_to_show))
 
 def myFunc(e):
@@ -180,15 +192,19 @@ def greedyalgo(ch,W):
 		if ch[chs[i][0]][3]==10:
 			profit+=float(chs[i][1]*6.0)
 
-	# print('Total house that will receive electricity:-{}'.format(str(ans1)))
+	print('greedy')
+	print('Total house that will receive electricity:-{}'.format(str(ans1)))
+	print('Total profit:-{}'.format(str(profit)))
 	houses_to_show=[]
 	for i in range(0,idx+1):
 		houses_to_show.append(cityhouses1[chs[i][0]])
 	houses_to_show=np.array(houses_to_show)
-	# plt.scatter(ch[:,0],ch[:,1],color='red')
-	# plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue')
-	# plt.show()
-	print(profit)
+	plt.scatter(ch[:,0],ch[:,1],color='red',label='supply cut')
+	plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
+	plt.title("Greedy Algorithm")
+	plt.legend()
+	plt.show()
+	# print(profit)
 	return (profit,len(houses_to_show))
 	# for i in range(len(graph1)):
 
@@ -261,7 +277,6 @@ print("Enter the coordinates of the houses one by one:-")
 for i in range(no_of_houses):
 	lh=input().split(',')
 	cityhouses.append([float(lh[0]),float(lh[1]),int(lh[2]),int(lh[3])])
-	# cityhouses.append([float(lh[0]),float(lh[1])])
 # print(cityhouses)
 cityhouses=np.array(cityhouses)
 cityhouses1=cityhouses[:,0:2]
@@ -270,7 +285,7 @@ kmeans=KMeans(n_clusters=no_of_transformers)
 kmeans.fit(cityhouses1)
 citytransformers=kmeans.cluster_centers_
 pred1=kmeans.labels_
-# print(pred1)
+print(pred1)
 # print(citytranformers)
 no_of_substations=int(input("Enter the number of substations you wish to install:-"))
 kmeans=KMeans(n_clusters=no_of_substations)
@@ -281,16 +296,19 @@ kmeans=KMeans(n_clusters=1)
 kmeans.fit(citysubstations)
 citysource=kmeans.cluster_centers_
 plt.scatter(cityhouses[:,0],cityhouses[:,1])
-# plt.scatter(citytranformers[:,0],citytranformers[:,1],marker='*',color='orange')
-# plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red')
-plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue')
+plt.scatter(citytransformers[:,0],citytransformers[:,1],marker='*',color='orange',label='transformers')
+plt.scatter(citysubstations[:,0], citysubstations[:,1],marker='v',color='red',label='substations')
+plt.scatter(citysource[:,0], citysource[:,1],marker='s',color='blue',label='source')
+plt.title("Kmeans 3")
+plt.legend()  # Add a legend.
 plt.show()
+
 graph1=connecthousestotransformers(cityhouses1, citytransformers, pred1,0,len(cityhouses1))
 graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
 graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
 greedyalgo(cityhouses,500)
-# knapsackhouse(cityhouses, 500)
-# knapsackcluster(cityhouses, pred1, 500, no_of_transformers)
+knapsackhouse(cityhouses, 500)
+knapsackcluster(cityhouses, pred1, 500, no_of_transformers)
 # print(graph1)
 # dynamicpricing()
 # simulation(cityhouses, 500, pred1, no_of_transformers)
