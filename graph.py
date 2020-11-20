@@ -175,8 +175,9 @@ def greedyalgo(ch,W):
 	chs=[]
 	profit=0.0
 	for i in range(len(ch)):
-		chs.append((i+1,ch[i][2]))
-	sorted(chs,key=myFunc)
+		chs.append([i,int(ch[i][2])])
+	chs.sort(key= lambda x:x[1])
+	# print(chs)
 	ans1=0
 	idx=-1
 	for i in range(len(chs)):
@@ -271,12 +272,55 @@ def simulation(cityhouses,W,pred,no_of_transformers):
 	print("According to Knapsack by cluster Algorithm")
 	print(z)
 
+def twowayapproach(cityhouses,W,pred,no_of_transformers,citytransformers):
+	netcon=[0 for i in range(no_of_transformers)]
+	netpro=[0 for i in range(no_of_transformers)]
+	netcons=[0 for i in range(no_of_transformers)]
+	for i in range(len(cityhouses)):
+		netcon[pred[i]]+=cityhouses[i][4]-cityhouses[i][2]
+		netpro[pred[i]]+=cityhouses[i][4]
+		netcons[pred[i]]+=cityhouses[i][2]
+		if(cityhouses[i][4]-cityhouses[i][2]) > 0:
+			cityhouses[i][5]=1
+
+	sourceadd=0
+	clusters_to_showing=[]
+	for i in range(no_of_transformers):
+		if netcon[i] > 0:
+			sourceadd+=netcon[i]
+		if netcon[i] == 0:
+			clusters_to_showing.append(i)
+	coog=[]
+	for i in range(len(cityhouses)):
+		if pred[i] in clusters_to_showing:
+			coog.append([cityhouses[i][0],cityhouses[i][1]])
+
+	# print(len(coog))
+	n=[]
+	for i in range(6):
+		n.append("({},{})".format(str(int(netcons[i])),str(int(netpro[i]))))
+	fig,ax=plt.subplots()
+	coog=np.array(coog)
+	ax.scatter(cityhouses[:,0],cityhouses[:,1],color='blue',label='Normal clusters')
+	if len(coog) > 0:
+		ax.scatter(coog[:,0],coog[:,1],color='green',label='Self sufficient clusters')
+	# plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
+	ax.scatter(citytransformers[:,0],citytransformers[:,1],color='red',label='Transformers',marker='*')
+	for i,txt in enumerate(n):
+		ax.annotate(txt,(citytransformers[i][0],citytransformers[i][1]))
+	plt.title("Two Way Approach")
+	plt.legend()
+	plt.show()
+	return sourceadd
+
 cityhouses=[]
+weightsconsumption=[]
 no_of_houses=int(input("Enter the number of houses:-"))
 print("Enter the coordinates of the houses one by one:-")
 for i in range(no_of_houses):
 	lh=input().split(',')
-	cityhouses.append([float(lh[0]),float(lh[1]),int(lh[2]),int(lh[3])])
+	weightsconsumption.append(int(lh[2]))
+	cityhouses.append([float(lh[0]),float(lh[1]),int(lh[2]),int(lh[3]),int(lh[4]),int(lh[5])])
 # print(cityhouses)
 cityhouses=np.array(cityhouses)
 cityhouses1=cityhouses[:,0:2]
@@ -311,7 +355,10 @@ graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)
 # knapsackcluster(cityhouses, pred1, 500, no_of_transformers)
 # print(graph1)
 # dynamicpricing()
-# simulation(cityhouses, 500, pred1, no_of_transformers)
+
+simulation(cityhouses, 500, pred1, no_of_transformers)
+for i in range(no_of_houses):
+	cityhouses[i][2]=weightsconsumption[i]
 # dynamicpricing()
 n_groups=12
 d1=dynamicpricingbill()
@@ -331,3 +378,4 @@ plt.xticks(index+bar_width,('January','Februray','March','April','May','June','J
 plt.legend()
 # plt.tight_layout()
 plt.show()
+twowayapproach(cityhouses, 500, pred1, no_of_transformers,citytransformers)
