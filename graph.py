@@ -300,6 +300,25 @@ def twowayapproach(cityhouses,W,pred,no_of_transformers,citytransformers):
 	plt.show()
 	return sourceadd
 
+def dynamicvsstatic():
+	n_groups=12
+	d1=dynamicpricingbill()
+	d2=staticpricingbill()
+	d1=np.array(d1)
+	d2=np.array(d2)
+	fig,ax=plt.subplots()
+	index=np.arange(n_groups)
+	bar_width=0.35
+	opacity=0.8
+	rects1=plt.bar(index, d2,bar_width,alpha=opacity,color='b',label='Static')
+	rects1=plt.bar(index+bar_width, d1,bar_width,alpha=opacity,color='g',label='Dynamic')
+	plt.xlabel("Year")
+	plt.ylabel("Bill Amount")
+	plt.title("Static vs Dynamic Pricing")
+	plt.xticks(index+bar_width,('January','Februray','March','April','May','June','July','August','September','October','November','December'))
+	plt.legend()
+	plt.show()
+
 cityhouses=[]
 weightsconsumption=[]
 no_of_houses=int(input("Enter the number of houses:-"))
@@ -347,23 +366,5 @@ graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)
 simulation(cityhouses, W, pred1, no_of_transformers)
 for i in range(no_of_houses):
 	cityhouses[i][2]=weightsconsumption[i]
-# dynamicpricing()
-n_groups=12
-d1=dynamicpricingbill()
-d2=staticpricingbill()
-d1=np.array(d1)
-d2=np.array(d2)
-fig,ax=plt.subplots()
-index=np.arange(n_groups)
-bar_width=0.35
-opacity=0.8
-rects1=plt.bar(index, d2,bar_width,alpha=opacity,color='b',label='Static')
-rects1=plt.bar(index+bar_width, d1,bar_width,alpha=opacity,color='g',label='Dynamic')
-plt.xlabel("Year")
-plt.ylabel("Bill Amount")
-plt.title("Static vs Dynamic Pricing")
-plt.xticks(index+bar_width,('January','Februray','March','April','May','June','July','August','September','October','November','December'))
-plt.legend()
-# plt.tight_layout()
-plt.show()
+dynamicvsstatic()
 twowayapproach(cityhouses, W, pred1, no_of_transformers,citytransformers)
