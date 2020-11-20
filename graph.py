@@ -104,11 +104,11 @@ def knapsackhouse(cityhouses,W):
 	print('Total profit:-{}'.format(str(K[n][W])))
 
 	houses_to_show=np.array(houses_to_show)
-	plt.scatter(cityhouses[:,0],cityhouses[:,1],color='red',label='supply cut')
-	plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
-	plt.title("Knapsack Algorithm on houses")
-	plt.legend()
-	plt.show()
+	# plt.scatter(cityhouses[:,0],cityhouses[:,1],color='red',label='supply cut')
+	# plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
+	# plt.title("Knapsack Algorithm on houses")
+	# plt.legend()
+	# plt.show()
 	return (K[n][W],len(houses_to_show))
 
 def knapsackcluster(cityhouses,pred,W,no_of_transformers):
@@ -159,11 +159,11 @@ def knapsackcluster(cityhouses,pred,W,no_of_transformers):
 	print('knapsackcluster')
 	print('Total house that will receive electricity:-{}'.format(str(len(houses_to_show))))
 	print('Total profit:-{}'.format(str(K[n][W])))
-	plt.scatter(cityhouses[:,0],cityhouses[:,1],color='red',label='supply cut')
-	plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
-	plt.title("Knapsack Algorithm on clusters")
-	plt.legend()
-	plt.show()
+	# plt.scatter(cityhouses[:,0],cityhouses[:,1],color='red',label='supply cut')
+	# plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
+	# plt.title("Knapsack Algorithm on clusters")
+	# plt.legend()
+	# plt.show()
 	return (K[n][W],len(clusters_to_show))
 
 def myFunc(e):
@@ -199,35 +199,35 @@ def greedyalgo(ch,W):
 	for i in range(0,idx+1):
 		houses_to_show.append(cityhouses1[chs[i][0]])
 	houses_to_show=np.array(houses_to_show)
-	plt.scatter(ch[:,0],ch[:,1],color='red',label='supply cut')
-	plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
-	plt.title("Greedy Algorithm")
-	plt.legend()
-	plt.show()
+	# plt.scatter(ch[:,0],ch[:,1],color='red',label='supply cut')
+	# plt.scatter(houses_to_show[:,0],houses_to_show[:,1],color='blue',label='supply on')
+	# plt.title("Greedy Algorithm")
+	# plt.legend()
+	# plt.show()
 	# print(profit)
 	return (profit,len(houses_to_show))
 	# for i in range(len(graph1)):
 
 def dynamicpricing():
 	# Cc=0.0,Cd=0.0,Cg=0.0
-	# Cc=float(input('Enter price of coal per unit'))
-	# Cd=float(input('Enter price of diesel per unit'))
-	# Cg=float(input('Enter price of gas per unit'))	
-	# Pc=float(input('Enter percentage of coal usedused'))
-	# Pd=float(input('Enter percentage of diesel used'))
-	# Pg=float(input('Enter percentage of gas used'))
-	price_one_unit_electricity=19.4
-	# Cc*Pc+Cd*Pd+Cg*Pg
-	df=pd.read_csv('sample.csv')
+	Cc=float(input('Enter price of coal per unit'))
+	Cd=float(input('Enter price of diesel per unit'))
+	Cg=float(input('Enter price of gas per unit'))	
+	Pc=float(input('Enter percentage of coal usedused'))
+	Pd=float(input('Enter percentage of diesel used'))
+	Pg=float(input('Enter percentage of gas used'))
+	fp=float(input('Enter fixed (infrastructure) charges:-'))
+	price_one_unit_electricity=Cc*Pc+Cd*Pd+Cg*Pg+fp
+	df=pd.read_csv('sample1.csv')
 	df=np.array(df)
-	x=df.shape[0]-170
+	x=df.shape[0]-169
 	for i in range(0,x):
-		consumption=df[i:168+i,7]
+		consumption=df[i:168+i,2]
 		consumption = consumption.astype(np.float)
 		avgcon=np.sum(consumption)
 		# avgcon=float(avgcon)
 		avgcon/=float(168)
-		D=float(df[169+i][7])
+		D=float(df[169+i][2])
 		D/=avgcon
 		D*=price_one_unit_electricity
 		print('Price of current hour :- {} on day and hour {}'.format(D,df[i+169][0]))
@@ -308,9 +308,10 @@ graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2
 graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
 # greedyalgo(cityhouses,500)
 # knapsackhouse(cityhouses, 500)
-knapsackcluster(cityhouses, pred1, 500, no_of_transformers)
+# knapsackcluster(cityhouses, pred1, 500, no_of_transformers)
 # print(graph1)
 # dynamicpricing()
 # simulation(cityhouses, 500, pred1, no_of_transformers)
 # dynamicpricing()
 dynamicpricingbill()
+staticpricingbill()

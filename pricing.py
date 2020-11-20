@@ -10,7 +10,15 @@ def dynamicpricingbill():
 	x=df.shape[0]-169
 	ticks=0
 	p1=0
-	price_one_unit_electricity=19.4
+	Cc=float(input('Enter price of coal per unit'))
+	Cd=float(input('Enter price of diesel per unit'))
+	Cg=float(input('Enter price of gas per unit'))	
+	Pc=float(input('Enter percentage of coal usedused'))
+	Pd=float(input('Enter percentage of diesel used'))
+	Pg=float(input('Enter percentage of gas used'))
+	fp=float(input('Enter fixed (infrastructure) charges:-'))
+	price_one_unit_electricity=Cc*Pc+Cd*Pd+Cg*Pg+fp
+	print()
 	for i in range(0,x):
 		consumption=df[i:168+i,2]
 		consumption = consumption.astype(np.float)
@@ -54,6 +62,7 @@ def staticpricingbill():
 	df=pd.read_csv('sample1.csv')
 	df=np.array(df)
 	x=0
+	print()
 	for i in range(12):
 		monthlybill=0.0
 		twu=df[x:arr[i]*24+x,1]
