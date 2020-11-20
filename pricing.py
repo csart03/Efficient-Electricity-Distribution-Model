@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 def dynamicpricingbill():
 	arr=[31,28,31,30,31,30,31,31,30,31,30,31]
 	arr1=['January','Februray','March','April','May','June','July','August','September','October','November','December']
@@ -6,9 +7,18 @@ def dynamicpricingbill():
 	flag=0
 	df=pd.read_csv('sample1.csv')
 	df=np.array(df)
-	x=df.shape[0]-170
+	x=df.shape[0]-169
 	ticks=0
 	p1=0
+	Cc=float(input('Enter price of coal per unit'))
+	Cd=float(input('Enter price of diesel per unit'))
+	Cg=float(input('Enter price of gas per unit'))	
+	Pc=float(input('Enter percentage of coal usedused'))
+	Pd=float(input('Enter percentage of diesel used'))
+	Pg=float(input('Enter percentage of gas used'))
+	fp=float(input('Enter fixed (infrastructure) charges:-'))
+	price_one_unit_electricity=Cc*Pc+Cd*Pd+Cg*Pg+fp
+	print()
 	for i in range(0,x):
 		consumption=df[i:168+i,2]
 		consumption = consumption.astype(np.float)
@@ -22,8 +32,8 @@ def dynamicpricingbill():
 			totalwattsused=df[0:168,1]
 			totalwattsused = totalwattsused.astype(np.float)
 			twu=np.sum(totalwattsused)
-			billamount+=totalwattsused*D
-			billamount+=float(df[169+i][1])*D
+			billamount+=twu*D
+			billamount+=(float(df[169+i][1])*D)
 			flag=1
 			ticks+=169
 		else:
@@ -32,10 +42,11 @@ def dynamicpricingbill():
 		if ticks == (arr[p1]*24):
 			ticks=0
 			print('Bill for the month of {} is {}'.format(arr1[p1],str(billamount)))
+			billamount=0.0
 			p1+=1
 			if p1==12:
 				break
-
+	print('Bill for the month of {} is {}'.format(arr1[p1],str(billamount)))
 	# return billamount
 
 def staticpricingbill():
@@ -51,6 +62,7 @@ def staticpricingbill():
 	df=pd.read_csv('sample1.csv')
 	df=np.array(df)
 	x=0
+	print()
 	for i in range(12):
 		monthlybill=0.0
 		twu=df[x:arr[i]*24+x,1]
