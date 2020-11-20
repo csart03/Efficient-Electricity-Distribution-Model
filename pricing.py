@@ -19,6 +19,7 @@ def dynamicpricingbill():
 	fp=float(input('Enter fixed (infrastructure) charges:-'))
 	price_one_unit_electricity=Cc*Pc+Cd*Pd+Cg*Pg+fp
 	print()
+	data=[]
 	for i in range(0,x):
 		consumption=df[i:168+i,2]
 		consumption = consumption.astype(np.float)
@@ -42,12 +43,14 @@ def dynamicpricingbill():
 		if ticks == (arr[p1]*24):
 			ticks=0
 			print('Bill for the month of {} is {}'.format(arr1[p1],str(billamount)))
+			data.append(billamount)
 			billamount=0.0
 			p1+=1
 			if p1==12:
 				break
 	print('Bill for the month of {} is {}'.format(arr1[p1],str(billamount)))
-	# return billamount
+	data.append(billamount)
+	return data
 
 def staticpricingbill():
 	S1=float(input('Enter Slab 1 margin:-'))
@@ -62,6 +65,7 @@ def staticpricingbill():
 	df=pd.read_csv('sample1.csv')
 	df=np.array(df)
 	x=0
+	data=[]
 	print()
 	for i in range(12):
 		monthlybill=0.0
@@ -78,3 +82,5 @@ def staticpricingbill():
 		else:
 			monthlybill=S1*P1+S2*P2+S3*P3+(totalwatts-S1-S2-S3)*P4
 		print('Bill for the month of {} is {}'.format(arr1[i],str(monthlybill)))
+		data.append(monthlybill)
+	return data
