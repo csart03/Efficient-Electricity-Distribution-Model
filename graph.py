@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from sklearn.cluster import KMeans
 import pandas as pd
 from prettytable import PrettyTable
-import pricing
+from pricing import *
 import random
 class citytoken:
 	def __init__(self,x,y,label):
@@ -306,7 +306,6 @@ plt.show()
 graph1=connecthousestotransformers(cityhouses1, citytransformers, pred1,0,len(cityhouses1))
 graph2=connecttransformerstosubstations(citytransformers, citysubstations, pred2,len(cityhouses),len(cityhouses)+len(citytransformers))
 graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)+len(citytransformers),len(cityhouses)+len(citytransformers)+1)
-
 greedyalgo(cityhouses,500)
 knapsackhouse(cityhouses, 500)
 knapsackcluster(cityhouses, pred1, 500, no_of_transformers)
@@ -314,3 +313,4 @@ knapsackcluster(cityhouses, pred1, 500, no_of_transformers)
 # dynamicpricing()
 # simulation(cityhouses, 500, pred1, no_of_transformers)
 # dynamicpricing()
+dynamicpricingbill()
