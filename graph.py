@@ -61,9 +61,9 @@ def knapsackhouse(cityhouses,W):
 		if cityhouses[i][3]==10:
 			values.append(cityhouses[i][2]*6.0)
 
-	# print(len(weights))
-	# print(len(values))
-	K = [[0 for x in range(W + 1)] for x in range(n + 1)] 
+	# print(weights)
+	# print(values)
+	K = [[0.0 for x in range(W + 1)] for x in range(n + 1)] 
 
 	for i in range(n+1):
 		for w in range(W + 1): 
@@ -73,7 +73,9 @@ def knapsackhouse(cityhouses,W):
 				K[i][w] = max(values[i-1] + K[i-1][w-weights[i-1]],  K[i-1][w]) 
 			else: 
 				K[i][w] = K[i-1][w] 
+	# print(K[n][W])
 	res= K[n][W]
+	t=[]
 	w=W
 	houses_to_show=[]
 	for i in range(n, 0, -1):
@@ -82,11 +84,12 @@ def knapsackhouse(cityhouses,W):
 		if res == K[i - 1][w]: 
 			continue
 		else: 
-			# print(wt[i - 1]) 
+			# print(wt[i - 1])
+			t.append(values[i-1]) 
 			houses_to_show.append(cityhouses[i-1])
 			res = res - values[i - 1] 
 			w = w - weights[i - 1]
-
+	# print(t)
 	print('knapsackhouse')
 	print('Total house that will receive electricity:-{}'.format(str(len(houses_to_show))))
 	print('Total profit:-{}'.format(str(K[n][W])))
@@ -180,11 +183,14 @@ def greedyalgo(ch,W):
 			profit+=float(chs[i][1]*4.5)
 		if ch[chs[i][0]][3]==10:
 			profit+=float(chs[i][1]*6.0)
+	if idx ==-1:
+		idx=len(chs)-1
 
 	print('greedy')
 	print('Total house that will receive electricity:-{}'.format(str(ans1)))
 	print('Total profit:-{}'.format(str(profit)))
 	houses_to_show=[]
+
 	for i in range(0,idx+1):
 		houses_to_show.append(cityhouses1[chs[i][0]])
 	houses_to_show=np.array(houses_to_show)
@@ -246,7 +252,8 @@ def simulation(cityhouses,W,pred,no_of_transformers):
 			flag=1
 		else:
 			for i in range(len(cityhouses)):
-				cityhouses[i][2]=random.randint(0,101)
+				cityhouses[i][2]=int(np.random.randint(0,100))
+				print(cityhouses[i][2])
 			a1=knapsackhouse(cityhouses, W)
 			y.add_row([w,str(a1[0]),str(a1[1])])
 			a1=knapsackcluster(cityhouses, pred, W, no_of_transformers)
@@ -366,5 +373,5 @@ graph3=connectsubstationstosource(citysubstations, citysource, 0,len(cityhouses)
 simulation(cityhouses, W, pred1, no_of_transformers)
 for i in range(no_of_houses):
 	cityhouses[i][2]=weightsconsumption[i]
-dynamicvsstatic()
-twowayapproach(cityhouses, W, pred1, no_of_transformers,citytransformers)
+# dynamicvsstatic()
+# twowayapproach(cityhouses, W, pred1, no_of_transformers,citytransformers)
