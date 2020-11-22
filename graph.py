@@ -183,8 +183,10 @@ def greedyalgo(ch,W):
 			profit+=float(chs[i][1]*4.5)
 		if ch[chs[i][0]][3]==10:
 			profit+=float(chs[i][1]*6.0)
-	if idx ==-1:
+	if idx ==-1 and amt > 0 :
 		idx=len(chs)-1
+	elif idx==-1 and amt<=0:
+		idx=len(chs)-2
 
 	print('greedy')
 	print('Total house that will receive electricity:-{}'.format(str(ans1)))
